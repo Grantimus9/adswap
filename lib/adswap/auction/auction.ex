@@ -84,7 +84,11 @@ defmodule Adswap.Auction do
       ** (Ecto.NoResultsError)
 
   """
-  def get_bidder!(id), do: Repo.get!(Bidder, id)
+  def get_bidder!(id) do
+    Bidder
+    |> Repo.get!(id)
+    |> Repo.preload(:campaign)
+  end
 
   @doc """
   Creates a bidder.
@@ -99,9 +103,13 @@ defmodule Adswap.Auction do
 
   """
   def create_bidder(attrs \\ %{}) do
-    %Bidder{}
-    |> Bidder.changeset(attrs)
-    |> Repo.insert()
+    chgset = %Bidder{} |> Bidder.changeset(attrs)
+    case Repo.insert(chgset) do
+      {:ok, bidder} ->
+        assign_campaign(bidder)
+      errors ->
+        errors
+    end
   end
 
   @doc """

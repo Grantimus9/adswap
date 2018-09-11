@@ -1,13 +1,14 @@
-<h2>Show Bidder</h2>
+<h2><%= @bidder.name %></h2>
 
 <ul>
-
   <li>
-    <strong>Name:</strong>
-    <%= @bidder.name %>
+    <strong>Your Campaign:</strong>
+    <%= @bidder.campaign.name %>
   </li>
-
+  <li>
+    <strong>Your Campaign Description:</strong>
+    <%= @bidder.campaign.description %>
+  </li>
 </ul>
 
-<span><%= link "Edit", to: bidder_path(@conn, :edit, @bidder) %></span>
 <span><%= link "Back", to: bidder_path(@conn, :index) %></span>

@@ -9,6 +9,14 @@ defmodule Adswap.Repo.Migrations.CreateBidder do
       add :description, :string, default: "Brand Awareness"
       add :budget, :integer, default: 1000
 
+      # the attributes that make an impression valuable to this campaign.
+      # players don't know this.
+      add :preferred_client_ip_addresses, {:array, :string}, default: []
+      add :preferred_cookie_ids, {:array, :string}, default: []
+      add :preferred_urls, {:array, :string}, default: []
+      add :preferred_times, {:array, :string}, default: []
+
+
       timestamps()
     end
 
