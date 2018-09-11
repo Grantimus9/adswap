@@ -5,7 +5,7 @@ defmodule Adswap.Auction do
 
   import Ecto.Query, warn: false
   alias Adswap.Repo
-  alias Adswap.Auction.Bidder
+  alias Adswap.Auction.{Bidder, Campaign}
 
 
   @doc """
@@ -17,16 +17,13 @@ defmodule Adswap.Auction do
       nil ->
         campaign =
           Campaign
-          |> Campaign.unassigned()
           |> Repo.all()
           |> Enum.random()
 
-        campaign
-        |> Map.put(:bidder_id, bidder.id)
-        |> Repo.update!()
+        update_bidder(bidder, %{campaign_id: campaign.id})
 
       campaign ->
-        {:ok, campaign}
+        {:ok, bidder}
     end
   end
 

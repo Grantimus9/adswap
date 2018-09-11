@@ -7,7 +7,8 @@ defmodule Adswap.Auction.Campaign do
     field :budget, :integer
     field :description, :string
     field :name, :string
-    belongs_to :bidder, Bidder
+    has_many :bidders, Bidder
+
     timestamps()
   end
 
