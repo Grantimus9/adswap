@@ -18,6 +18,7 @@ defmodule AdswapWeb.Router do
 
     get "/", PageController, :index
     resources "/bidders", BidderController
+    get "/bidders/:id/bid", BidderController, :bid
     resources "/impressions", ImpressionController, only: [:show, :index]
     resources "/campaigns", CampaignController
   end
