@@ -1,0 +1,28 @@
+<h2>Listing Impressions</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Time</th>
+      <th>Url</th>
+      <th>Cookie</th>
+      <th>Client ip address</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for impression <- @impressions do %>
+    <tr>
+      <td><%= impression.time %></td>
+      <td><%= impression.url %></td>
+      <td><%= impression.cookie_id %></td>
+      <td><%= impression.client_ip_address %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: impression_path(@conn, :show, impression), class: "btn btn-default btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>

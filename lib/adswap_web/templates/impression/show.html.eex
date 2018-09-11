@@ -1,0 +1,28 @@
+<h2>Show Impression</h2>
+
+<ul>
+
+  <li>
+    <strong>Time:</strong>
+    <%= @impression.time %>
+  </li>
+
+  <li>
+    <strong>Url:</strong>
+    <%= @impression.url %>
+  </li>
+
+  <li>
+    <strong>Cookie:</strong>
+    <%= @impression.cookie_id %>
+  </li>
+
+  <li>
+    <strong>Client ip address:</strong>
+    <%= @impression.client_ip_address %>
+  </li>
+
+</ul>
+
+<span><%= link "Edit", to: impression_path(@conn, :edit, @impression) %></span>
+<span><%= link "Back", to: impression_path(@conn, :index) %></span>

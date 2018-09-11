@@ -18,6 +18,8 @@ defmodule AdswapWeb.Router do
 
     get "/", PageController, :index
     resources "/bidders", BidderController
+    resources "/impressions", ImpressionController, only: [:show, :index]
+    resources "/campaigns", CampaignController
   end
 
   # Other scopes may use custom stacks.
