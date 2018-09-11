@@ -19,7 +19,7 @@ defmodule AdswapWeb.BidderController do
       {:ok, bidder} ->
         conn
         |> put_flash(:info, "Bidder created successfully.")
-        |> redirect(to: bidder_path(conn, :show, bidder))
+        |> redirect(to: page_path(conn, :index))
       {:error, %Ecto.Changeset{} = changeset} ->
         render(conn, "new.html", changeset: changeset)
     end

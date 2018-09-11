@@ -17,6 +17,8 @@
         <nav role="navigation">
           <ul class="nav nav-pills pull-right">
             <li><a href="/bidders">Bidders</a></li>
+            <li><a href="/impressions">Impressions</a></li>
+            <li><a href="/campaigns">Campaigns</a></li>
           </ul>
         </nav>
       </header>
