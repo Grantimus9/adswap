@@ -1,0 +1,28 @@
+<h2>Listing Bidders</h2>
+
+<table class="table">
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Balance</th>
+
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+<%= for bidder <- @bidders do %>
+    <tr>
+      <td><%= bidder.name %></td>
+      <td><%= bidder.balance %></td>
+
+      <td class="text-right">
+        <span><%= link "Show", to: bidder_path(@conn, :show, bidder), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Edit", to: bidder_path(@conn, :edit, bidder), class: "btn btn-default btn-xs" %></span>
+        <span><%= link "Delete", to: bidder_path(@conn, :delete, bidder), method: :delete, data: [confirm: "Are you sure?"], class: "btn btn-danger btn-xs" %></span>
+      </td>
+    </tr>
+<% end %>
+  </tbody>
+</table>
+
+<span><%= link "New Bidder", to: bidder_path(@conn, :new) %></span>
