@@ -7,11 +7,6 @@
     <%= @bidder.name %>
   </li>
 
-  <li>
-    <strong>Balance:</strong>
-    <%= @bidder.balance %>
-  </li>
-
 </ul>
 
 <span><%= link "Edit", to: bidder_path(@conn, :edit, @bidder) %></span>

@@ -5,8 +5,60 @@ defmodule Adswap.Auction do
 
   import Ecto.Query, warn: false
   alias Adswap.Repo
-
   alias Adswap.Auction.Bidder
+
+
+  @doc """
+    Assigns a campaign to a bidder.
+  """
+  def assign_campaign(bidder = %Bidder{}) do
+    bidder = bidder |> Repo.preload(:campaign)
+    case bidder.campaign do
+      nil ->
+        campaign =
+          Campaign
+          |> Campaign.unassigned()
+          |> Repo.all()
+          |> Enum.random()
+
+        campaign
+        |> Map.put(:bidder_id, bidder.id)
+        |> Repo.update!()
+
+      campaign ->
+        {:ok, campaign}
+    end
+  end
+
+  def assign_all_campaigns() do
+    Bidder
+    |> Repo.all()
+    |> Enum.map(&assign_campaign/1)
+  end
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
   @doc """
   Returns the list of bidders.
