@@ -4,6 +4,7 @@ defmodule Adswap.Auction.Auctioneer do
   """
   use GenServer
   alias Adswap.Auction.ImpressionGenerator
+  alias Adswap.Auction
 
   def start_link do
     GenServer.start_link(__MODULE__, %{}, name: __MODULE__)
@@ -33,7 +34,7 @@ defmodule Adswap.Auction.Auctioneer do
   def handle_call({:bid, new_bid}, _from, state) do
     new_bid = %{
       bidder_code: Map.get(new_bid, "bidder_code"),
-      bid_amount: Map.get(new_bid, "bid_amount")
+      bid_amount: String.to_integer(Map.get(new_bid, "bid_amount"))
     }
 
     state =
@@ -79,10 +80,15 @@ defmodule Adswap.Auction.Auctioneer do
     case Map.get(state, :time_remaining) do
       0 ->
         # If auction is over need to start settlement process.
-        # Choose winner, calculate winning bid, and winning price PAID.
+        # Choose winner, calculate winning bid, and winning price paid.
+        results = Auction.choose_winner(Map.get(state, :bids))
+
+        IO.inspect Auction.bill_winning_campaign(results)
+
         # Deduct price paid from winner's balance.
         # broadcast winner information to participants
-        AdswapWeb.Endpoint.broadcast("auction:lobby", "auction_event", %{message: "Auction Ended. Bidding Closed."})
+        AdswapWeb.Endpoint.broadcast("auction:lobby", "auction_event", %{message: "Bidding Closed."})
+        AdswapWeb.Endpoint.broadcast("auction:lobby", "auction_event", %{message: "Winning Bidder Paid: " <> Integer.to_string(Map.get(results, :winner_pays))})
 
         nil
 

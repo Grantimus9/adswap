@@ -35,23 +35,41 @@ defmodule Adswap.Auction do
 
 
   @doc """
-    Starts a new auction.
+    Returns the winning bid.
   """
-  def new_auction(timeout_seconds \\ 60) do
-    # Generate an impression.
-    [imp] = ImpressionGenerator.generate(1)
-    now = DateTime.utc_now() |> DateTime.to_unix()
-    end_time = now + timeout_seconds
-
-    %{impression: imp, end_time: end_time}
+  def rank_bids(bids) do
+    bids
+    |> Enum.sort(&(Map.get(&1, :bid_amount) >= Map.get(&2, :bid_amount)))
   end
 
+  def choose_winner(bids) do
+    [winner | losers] = rank_bids(bids)
+    [second_place | _losers] = losers
+    payment_amount = Map.get(second_place, :bid_amount) + 1
 
+    %{
+      winner_code: Map.get(winner, :bidder_code),
+      winner_bid: Map.get(winner, :bid_amount),
+      winner_pays: payment_amount
+    }
+  end
 
+  @doc """
+    Deduct balance from winner.
+  """
+  def bill_winning_campaign(%{winner_code: code, winner_pays: amount}) do
+    bidder = Repo.get_by(Bidder, code: code) |> Repo.preload(:campaign)
 
-
-
-
+    case bidder do
+      nil ->
+        {:error, "No Such Bidder by Code"}
+      bidder ->
+        campaign = bidder |> Map.get(:campaign)
+        budget = campaign |> Map.get(:budget)
+        new_budget = budget - amount
+        update_campaign(campaign, %{budget: new_budget})
+    end
+  end
 
 
 
