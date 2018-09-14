@@ -7,3 +7,5 @@ Auction Status: <div id="auction-status"></div><br>
 <div id="messages"></div>
 <input id="bid-input-amount" type="number"></input>
 <input id="bid-input-code" type="text"></input>
+<button id="submit-bid-btn">Submit</button>
+or press enter.

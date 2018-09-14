@@ -57,7 +57,8 @@ socket.connect()
 let channel = socket.channel("auction:lobby", {})
 let bidInputAmount       = document.querySelector("#bid-input-amount")
 let bidInputCode         = document.querySelector("#bid-input-code")
-let messagesContainer = document.querySelector("#messages")
+let bidSubmitBtn         = document.querySelector("#submit-bid-btn")
+let messagesContainer    = document.querySelector("#messages")
 let timeRemainingContainer = document.querySelector("#time-remaining")
 let auctionStatusContainer = document.querySelector("#auction-status")
 
@@ -65,9 +66,13 @@ let auctionStatusContainer = document.querySelector("#auction-status")
 bidInputCode.addEventListener("keypress", event => {
   if(event.keyCode === 13){
     channel.push("new_bid", {bidAmount: bidInputAmount.value, bidCode: bidInputCode.value})
-    bidInputCode.value = ""
     bidInputAmount.value = 0
   }
+})
+
+bidSubmitBtn.addEventListener("click", event => {
+  channel.push("new_bid", {bidAmount: bidInputAmount.value, bidCode: bidInputCode.value})
+  bidInputAmount.value = 0
 })
 
 channel.on("new_bid", payload => {
