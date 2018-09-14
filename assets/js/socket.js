@@ -61,24 +61,36 @@ let bidSubmitBtn         = document.querySelector("#submit-bid-btn")
 let messagesContainer    = document.querySelector("#messages")
 let timeRemainingContainer = document.querySelector("#time-remaining")
 let auctionStatusContainer = document.querySelector("#auction-status")
+let currentImpressionUrlContainer = document.querySelector("#current-impression-url")
+let currentImpressionCookieIdContainer = document.querySelector("#current-impression-cookie-id")
+let currentImpressionClientIpAddressContainer = document.querySelector("#current-impression-client-ip-address")
+let currentImpressionTimeContainer = document.querySelector("#current-impression-time")
+
 
 
 bidInputCode.addEventListener("keypress", event => {
   if(event.keyCode === 13){
     channel.push("new_bid", {bidAmount: bidInputAmount.value, bidCode: bidInputCode.value})
-    bidInputAmount.value = 0
+    bidInputAmount.value = null
+  }
+})
+
+bidInputAmount.addEventListener("keypress", event => {
+  if(event.keyCode === 13){
+    channel.push("new_bid", {bidAmount: bidInputAmount.value, bidCode: bidInputCode.value})
+    bidInputAmount.value = null
   }
 })
 
 bidSubmitBtn.addEventListener("click", event => {
   channel.push("new_bid", {bidAmount: bidInputAmount.value, bidCode: bidInputCode.value})
-  bidInputAmount.value = 0
+  bidInputAmount.value = null
 })
 
 channel.on("new_bid", payload => {
   console.info(payload)
   let messageItem = document.createElement("li")
-  messageItem.innerText = `[${Date()}] ${payload.bid}`
+  messageItem.innerText = `Bid Received`
   messagesContainer.appendChild(messageItem)
 })
 
@@ -90,6 +102,14 @@ channel.on("time_remaining", payload => {
 channel.on("auction_status", payload => {
   console.info(payload)
   auctionStatusContainer.innerText = payload.auction_status
+})
+
+channel.on("impression", payload => {
+  console.info(payload.impression)
+  currentImpressionUrlContainer.innerText = payload.impression.url
+  currentImpressionCookieIdContainer.innerText = payload.impression.cookie_id
+  currentImpressionClientIpAddressContainer.innerText = payload.impression.client_ip_address
+  currentImpressionTimeContainer.innerText = payload.impression.time
 })
 
 channel.join()
