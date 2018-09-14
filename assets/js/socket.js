@@ -59,6 +59,8 @@ let bidInputAmount       = document.querySelector("#bid-input-amount")
 let bidInputCode         = document.querySelector("#bid-input-code")
 let messagesContainer = document.querySelector("#messages")
 let timeRemainingContainer = document.querySelector("#time-remaining")
+let auctionStatusContainer = document.querySelector("#auction-status")
+
 
 bidInputCode.addEventListener("keypress", event => {
   if(event.keyCode === 13){
@@ -78,6 +80,11 @@ channel.on("new_bid", payload => {
 channel.on("time_remaining", payload => {
   console.info(payload)
   timeRemainingContainer.innerText = payload.time
+})
+
+channel.on("auction_status", payload => {
+  console.info(payload)
+  auctionStatusContainer.innerText = payload.auction_status
 })
 
 channel.join()

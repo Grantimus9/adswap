@@ -2,6 +2,7 @@
 <h2>Bidding Screen</h2>
 
 Time Remaining: <div id="time-remaining"></div><br>
+Auction Status: <div id="auction-status"></div><br>
 
 <div id="messages"></div>
 <input id="bid-input-amount" type="number"></input>

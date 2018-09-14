@@ -18,6 +18,7 @@ defmodule Adswap.Auction.Auctioneer do
     state = %{
       impression: imp,
       end_time: end_time,
+      time_remaining: 500,
       bids: [],
       auction_status: "waiting for bids"
     }
@@ -29,15 +30,21 @@ defmodule Adswap.Auction.Auctioneer do
   @impl true
   def handle_info(:tick, state) do
     # Do the desired work here
-    case time_remaining(state) do
-      x when x <= 0 ->
-        AdswapWeb.Endpoint.broadcast("auction:lobby", "time_remaining", %{time: "AUCTION ENDED"})
+    state =
+      state
+      |> set_time_remaining()
+      |> set_auction_status()
 
-      x ->
-        AdswapWeb.Endpoint.broadcast("auction:lobby", "time_remaining", %{time: x})
+    AdswapWeb.Endpoint.broadcast("auction:lobby", "time_remaining", %{time: Map.get(state, :time_remaining)})
+    AdswapWeb.Endpoint.broadcast("auction:lobby", "auction_status", %{auction_status: Map.get(state, :auction_status)})
+
+    case Map.get(state, :time_remaining) do
+      0 ->
+        nil
+      _ ->
+       schedule_tick()
     end
 
-    schedule_tick()
     {:noreply, state}
   end
 
@@ -47,7 +54,28 @@ defmodule Adswap.Auction.Auctioneer do
 
   defp time_remaining(state) do
     t = DateTime.utc_now() |> DateTime.to_unix()
-    Map.get(state, :end_time) - t
+    case Map.get(state, :end_time) - t do
+      x when x <= 0 ->
+        0
+      x ->
+        x
+    end
+  end
+
+  defp set_time_remaining(state) do
+    %{state | time_remaining: time_remaining(state)}
+  end
+
+  defp set_auction_status(state) do
+    status =
+      case Map.get(state, :time_remaining) do
+        x when x <= 0 ->
+          "Ended"
+        _ ->
+          "Waiting For Bids"
+      end
+
+    state = %{state | auction_status: status}
   end
 
 end
