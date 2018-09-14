@@ -14,6 +14,7 @@ defmodule Adswap.Application do
       supervisor(AdswapWeb.Endpoint, []),
       # Start your own worker by calling: Adswap.Worker.start_link(arg1, arg2, arg3)
       # worker(Adswap.Worker, [arg1, arg2, arg3]),
+      worker(Adswap.Auction.Auctioneer, [])
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html

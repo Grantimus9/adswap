@@ -1,6 +1,8 @@
 <h1><%= @bidder.name %></h1>
 <h2>Bidding Screen</h2>
 
+Time Remaining: <div id="time-remaining"></div><br>
+
 <div id="messages"></div>
 <input id="bid-input-amount" type="number"></input>
 <input id="bid-input-code" type="text"></input>

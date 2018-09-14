@@ -58,6 +58,7 @@ let channel = socket.channel("auction:lobby", {})
 let bidInputAmount       = document.querySelector("#bid-input-amount")
 let bidInputCode         = document.querySelector("#bid-input-code")
 let messagesContainer = document.querySelector("#messages")
+let timeRemainingContainer = document.querySelector("#time-remaining")
 
 bidInputCode.addEventListener("keypress", event => {
   if(event.keyCode === 13){
@@ -72,6 +73,11 @@ channel.on("new_bid", payload => {
   let messageItem = document.createElement("li")
   messageItem.innerText = `[${Date()}] ${payload.bid}`
   messagesContainer.appendChild(messageItem)
+})
+
+channel.on("time_remaining", payload => {
+  console.info(payload)
+  timeRemainingContainer.innerText = payload.time
 })
 
 channel.join()
