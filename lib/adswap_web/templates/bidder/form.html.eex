@@ -12,6 +12,15 @@
   </div>
 
   <div class="form-group">
+    <%= label f, :code, class: "control-label" %><br>
+    Your bidder code you'll submit each time you bid to identify yourself.<br>
+    Choose something short, maximum of 4 letters.<br>
+
+    <%= text_input f, :code, class: "form-control" %>
+    <%= error_tag f, :code %>
+  </div>
+
+  <div class="form-group">
     <%= submit "Submit", class: "btn btn-primary" %>
   </div>
 <% end %>

@@ -22,10 +22,10 @@ defmodule Adswap.Repo.Migrations.CreateBidder do
 
     create table(:bidders) do
       add :name, :string, default: "An Anonymous Bidder"
+      add :code, :string, default: ""
       add :campaign_id, references(:campaigns)
       timestamps()
     end
-
     unique_index(:bidders, :campaign_id)
 
 
@@ -37,8 +37,15 @@ defmodule Adswap.Repo.Migrations.CreateBidder do
       add :winning_campaign_id, references(:campaigns)
       timestamps()
     end
-
     unique_index(:impressions, :winning_campaign_id)
+
+    create table(:bids) do
+      add :amount, :integer, default: 0
+      add :bidder_id, references(:bidders)
+      add :impression_id, references(:impressions)
+      timestamps()
+    end
+    unique_index(:bids, [:impression_id, :bidder_id]) # only one bid per impression per bidder.
 
   end
 end

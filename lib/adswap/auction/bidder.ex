@@ -5,6 +5,8 @@ defmodule Adswap.Auction.Bidder do
 
   schema "bidders" do
     field :name, :string, default: "An Anonymous Bidder"
+    field :code, :string, default: ""
+
     belongs_to :campaign, Campaign
 
     timestamps()
@@ -13,8 +15,9 @@ defmodule Adswap.Auction.Bidder do
   @doc false
   def changeset(bidder, attrs) do
     bidder
-    |> cast(attrs, [:name, :campaign_id])
+    |> cast(attrs, [:name, :campaign_id, :code])
     |> validate_required([:name])
+    |> validate_length(:code, min: 2, max: 4)
   end
 
 
