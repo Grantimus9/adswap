@@ -13,6 +13,14 @@ defmodule Adswap.Auction.Auctioneer do
     GenServer.call(__MODULE__, :start_new)
   end
 
+  # Recieves a bid.
+  # Either returns {:ok, bids} or {:error, "message"}
+  # e.g. {:error, "Auction ended"}
+  # e.g. {:error, "Already bid"}
+  def bid(bid) do
+    GenServer.call(__MODULE__, {:bid, bid})
+  end
+
   @impl true
   def init(state) do
     state = new_auction_state()
@@ -20,15 +28,34 @@ defmodule Adswap.Auction.Auctioneer do
     {:ok, state}
   end
 
-  def handle_call(:pop, _from, [head | tail]) do
-    {:reply, head, tail}
+  # Receive a bid. Add it to the list of bids only if the
+  # bidder_code hasn't already bid.
+  def handle_call({:bid, new_bid}, _from, state) do
+    new_bid = %{
+      bidder_code: Map.get(new_bid, "bidder_code"),
+      bid_amount: Map.get(new_bid, "bid_amount")
+    }
+
+    state =
+      state
+      |> Map.get(:bids)
+      |> Enum.filter(fn(bid) -> bid.bidder_code == new_bid.bidder_code end)
+      |> Enum.any?()
+      |> case do
+        true ->
+          state
+        false ->
+          state
+          |> Map.put(:bids, [new_bid | Map.get(state, :bids)])
+      end
+
+    IO.inspect state
+
+    {:reply, {:ok, Map.get(state, :bids)}, state}
   end
 
   def handle_call(:start_new, _from, _state) do
     state = new_auction_state()
-    IO.inspect "Starting new auction:"
-    IO.inspect state
-
     {:reply, :ok, state}
   end
 
@@ -51,7 +78,14 @@ defmodule Adswap.Auction.Auctioneer do
 
     case Map.get(state, :time_remaining) do
       0 ->
+        # If auction is over need to start settlement process.
+        # Choose winner, calculate winning bid, and winning price PAID.
+        # Deduct price paid from winner's balance.
+        # broadcast winner information to participants
+        AdswapWeb.Endpoint.broadcast("auction:lobby", "auction_event", %{message: "Auction Ended. Bidding Closed."})
+
         nil
+
       _ ->
        schedule_tick()
     end

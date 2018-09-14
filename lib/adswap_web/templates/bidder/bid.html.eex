@@ -1,19 +1,25 @@
 <h1><%= @bidder.name %></h1>
 <h2>Bidding Screen</h2>
 
-Current Impression: <br><br>
-Url: <div id="current-impression-url"></div><br>
-Cookie ID: <div id="current-impression-cookie-id"></div><br>
-Client IP Address: <div id="current-impression-client-ip-address"></div><br>
-Impression Time: <div id="current-impression-time"></div><br>
+<div class="row">
+  <div class="col-sm-8">
+    Current Impression: <br><br>
+    Url: <div id="current-impression-url"></div><br>
+    Cookie ID: <div id="current-impression-cookie-id"></div><br>
+    Client IP Address: <div id="current-impression-client-ip-address"></div><br>
+    Impression Time: <div id="current-impression-time"></div><br>
 
-<br><br>
+    <br><br>
 
-Time Remaining: <div id="time-remaining"></div><br>
-Auction Status: <div id="auction-status"></div><br>
+    Time Remaining: <div id="time-remaining"></div><br>
+    Auction Status: <div id="auction-status"></div><br>
 
-<div id="messages"></div>
-<input id="bid-input-code" type="text" placeholder="Bidder Code"></input>
-<input id="bid-input-amount" type="number" placeholder="bid in pennies"></input>
-<button id="submit-bid-btn">Submit</button>
-or press enter.
+    <input id="bid-input-code" type="text" placeholder="Bidder Code"></input>
+    <input id="bid-input-amount" type="number" placeholder="bid in pennies"></input>
+    <button id="submit-bid-btn">Submit</button>
+    or press enter.
+  </div>
+  <div class="col-sm-4">
+    <div id="messages"></div>
+  </div>
+</div>

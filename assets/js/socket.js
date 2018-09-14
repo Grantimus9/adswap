@@ -70,27 +70,34 @@ let currentImpressionTimeContainer = document.querySelector("#current-impression
 
 bidInputCode.addEventListener("keypress", event => {
   if(event.keyCode === 13){
-    channel.push("new_bid", {bidAmount: bidInputAmount.value, bidCode: bidInputCode.value})
+    channel.push("new_bid", {bid_amount: bidInputAmount.value, bidder_code: bidInputCode.value})
     bidInputAmount.value = null
   }
 })
 
 bidInputAmount.addEventListener("keypress", event => {
   if(event.keyCode === 13){
-    channel.push("new_bid", {bidAmount: bidInputAmount.value, bidCode: bidInputCode.value})
+    channel.push("new_bid", {bid_amount: bidInputAmount.value, bidder_code: bidInputCode.value})
     bidInputAmount.value = null
   }
 })
 
 bidSubmitBtn.addEventListener("click", event => {
-  channel.push("new_bid", {bidAmount: bidInputAmount.value, bidCode: bidInputCode.value})
+    channel.push("new_bid", {bid_amount: bidInputAmount.value, bidder_code: bidInputCode.value})
   bidInputAmount.value = null
 })
 
-channel.on("new_bid", payload => {
+channel.on("auction_event", payload => {
   console.info(payload)
   let messageItem = document.createElement("li")
-  messageItem.innerText = `Bid Received`
+  messageItem.innerText = `${payload.message}`
+  messagesContainer.appendChild(messageItem)
+})
+
+channel.on("bid_count", payload => {
+  console.info(payload)
+  let messageItem = document.createElement("li")
+  messageItem.innerText = `Bid Count: ${payload.count}`
   messagesContainer.appendChild(messageItem)
 })
 
@@ -113,7 +120,15 @@ channel.on("impression", payload => {
 })
 
 channel.join()
-  .receive("ok", resp => { console.log("Joined successfully", resp) })
-  .receive("error", resp => { console.log("Unable to join", resp) })
+  .receive("ok", resp => {
+      let messageItem = document.createElement("li")
+      messageItem.innerText = `Connected and ready to bid.`
+      messagesContainer.appendChild(messageItem)
+   })
+  .receive("error", resp => {
+      let messageItem = document.createElement("li")
+      messageItem.innerText = `Disconnected! Refresh!`
+      messagesContainer.appendChild(messageItem)
+  })
 
 export default socket

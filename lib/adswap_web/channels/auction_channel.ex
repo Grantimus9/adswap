@@ -11,10 +11,16 @@ defmodule AdswapWeb.AuctionChannel do
     {:error, %{reason: "unauthorized"}}
   end
 
-  def handle_in("new_bid", %{"bidAmount" => bid_amount, "bidCode" => bidder_code}, socket) do
-    #
+  def handle_in("new_bid", bid, socket) do
+    # Send Bid to Auction and handle response.
+    case Auctioneer.bid(bid) do
+      {:ok, bids} ->
+        broadcast! socket, "auction_event", %{message: "Someone Bid"}
+        broadcast! socket, "bid_count", %{count: Enum.count(bids)}
+      _ ->
+        nil
+    end
 
-    broadcast! socket, "new_bid", %{bid: bid_amount}
     {:noreply, socket}
   end
 end
