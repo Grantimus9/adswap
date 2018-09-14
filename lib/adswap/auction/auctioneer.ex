@@ -57,6 +57,7 @@ defmodule Adswap.Auction.Auctioneer do
 
   def handle_call(:start_new, _from, _state) do
     state = new_auction_state()
+    schedule_tick()
     {:reply, :ok, state}
   end
 
@@ -138,7 +139,7 @@ defmodule Adswap.Auction.Auctioneer do
       impression: imp,
       end_time: end_time,
       time_remaining: 500,
-      bids: [],
+      bids: [%{bid_amount: 0, bidder_code: "Default"}],
       auction_status: "waiting for bids"
     }
   end

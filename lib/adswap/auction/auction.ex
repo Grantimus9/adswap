@@ -42,7 +42,23 @@ defmodule Adswap.Auction do
     |> Enum.sort(&(Map.get(&1, :bid_amount) >= Map.get(&2, :bid_amount)))
   end
 
-  def choose_winner(bids) do
+  def choose_winner(bids) when length(bids) == 0 do
+    %{
+      winner_code: "No One.",
+      winner_bid: 0,
+      winner_pays: 0
+    }
+  end
+  def choose_winner(bids) when length(bids) == 1 do
+    [winner | losers] = rank_bids(bids)
+    payment_amount = Map.get(winner, :bid_amount)
+    %{
+      winner_code: Map.get(winner, :bidder_code),
+      winner_bid: Map.get(winner, :bid_amount),
+      winner_pays: payment_amount
+    }
+  end
+  def choose_winner(bids) when length(bids) > 1 do
     [winner | losers] = rank_bids(bids)
     [second_place | _losers] = losers
     payment_amount = Map.get(second_place, :bid_amount) + 1
