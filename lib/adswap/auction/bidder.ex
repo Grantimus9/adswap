@@ -17,7 +17,9 @@ defmodule Adswap.Auction.Bidder do
     bidder
     |> cast(attrs, [:name, :campaign_id, :code])
     |> validate_required([:name])
+    |> update_change(:code, &String.downcase/1)
     |> validate_length(:code, min: 2, max: 4)
+    |> unsafe_validate_unique([:code], Adswap.Repo)
   end
 
 
