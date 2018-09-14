@@ -5,7 +5,7 @@ defmodule Adswap.Auction do
 
   import Ecto.Query, warn: false
   alias Adswap.Repo
-  alias Adswap.Auction.{Bidder, Campaign}
+  alias Adswap.Auction.{Bidder, Campaign, ImpressionGenerator}
 
 
   @doc """
@@ -34,7 +34,17 @@ defmodule Adswap.Auction do
   end
 
 
+  @doc """
+    Starts a new auction.
+  """
+  def new_auction(timeout_seconds \\ 60) do
+    # Generate an impression.
+    [imp] = ImpressionGenerator.generate(1)
+    now = DateTime.utc_now() |> DateTime.to_unix()
+    end_time = now + timeout_seconds
 
+    %{impression: imp, end_time: end_time}
+  end
 
 
 

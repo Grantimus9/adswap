@@ -99,4 +99,16 @@ defmodule Adswap.Auction.ImpressionGenerator do
     end)
   end
 
+  def generate(count \\ 10) do
+    1..count
+    |> Enum.map(fn(int) ->
+      %Impression{
+        client_ip_address: Enum.random(@ipaddresses),
+        cookie_id: Enum.random(@cookie_ids),
+        time: Enum.random(@times),
+        url: Enum.random(@urls)
+      }
+    end)
+  end
+
 end
