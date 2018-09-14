@@ -2,7 +2,7 @@ defmodule AdswapWeb.UserSocket do
   use Phoenix.Socket
 
   ## Channels
-  # channel "room:*", AdswapWeb.RoomChannel
+  channel "auction:*", AdswapWeb.AuctionChannel
 
   ## Transports
   transport :websocket, Phoenix.Transports.WebSocket

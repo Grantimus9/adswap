@@ -54,7 +54,26 @@ let socket = new Socket("/socket", {params: {token: window.userToken}})
 socket.connect()
 
 // Now that you are connected, you can join channels with a topic:
-let channel = socket.channel("topic:subtopic", {})
+let channel = socket.channel("auction:lobby", {})
+let bidInputAmount       = document.querySelector("#bid-input-amount")
+let bidInputCode         = document.querySelector("#bid-input-code")
+let messagesContainer = document.querySelector("#messages")
+
+bidInputCode.addEventListener("keypress", event => {
+  if(event.keyCode === 13){
+    channel.push("new_bid", {bidAmount: bidInputAmount.value, bidCode: bidInputCode.value})
+    bidInputCode.value = ""
+    bidInputAmount.value = 0
+  }
+})
+
+channel.on("new_bid", payload => {
+  console.info(payload)
+  let messageItem = document.createElement("li")
+  messageItem.innerText = `[${Date()}] ${payload.bid}`
+  messagesContainer.appendChild(messageItem)
+})
+
 channel.join()
   .receive("ok", resp => { console.log("Joined successfully", resp) })
   .receive("error", resp => { console.log("Unable to join", resp) })
