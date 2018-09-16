@@ -1,5 +1,4 @@
-<h1><%= @bidder.name %></h1>
-<h2>Bidding Screen</h2>
+<h1>Bid!</h1>
 
 <div class="row">
   <div class="col-sm-8">

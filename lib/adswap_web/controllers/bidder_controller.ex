@@ -52,9 +52,8 @@ defmodule AdswapWeb.BidderController do
   @doc """
     The Bidding Screen
   """
-  def bid(conn, %{"id" => id}) do
-    bidder = Auction.get_bidder!(id)
-    render(conn, "bid.html", bidder: bidder)
+  def bid(conn, _parmas) do
+    render(conn, "bid.html")
   end
 
   def delete(conn, %{"id" => id}) do
