@@ -5,7 +5,7 @@ defmodule Adswap.Auction do
 
   import Ecto.Query, warn: false
   alias Adswap.Repo
-  alias Adswap.Auction.{Bidder, Campaign, ImpressionGenerator}
+  alias Adswap.Auction.{Bidder, Campaign, Impression, ImpressionGenerator}
 
 
   @doc """
@@ -87,9 +87,15 @@ defmodule Adswap.Auction do
     end
   end
 
+  # Create bids.
+  def persist_bids_to_db(bids) do
 
+  end
 
+  # Save impression, with winner info.
+  def persist_impression_to_db(impression = %Impression{}) do
 
+  end
 
 
 
