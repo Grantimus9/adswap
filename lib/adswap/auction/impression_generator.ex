@@ -25,6 +25,8 @@ defmodule Adswap.Auction.ImpressionGenerator do
     "www.moneyversed.com/before-and-after-photos/gallery?id=12&page=10",
     "www.bleacherreport.com/articles/2764241",
     "www.nytimes.com/2018/09/10/opinion/911-lessons-veteran",
+    "https://www.cnn.com/2018/09/25/politics/ford-kavanaugh-hearing-counsel-hired-republicans/index.html",
+    "http://www.foxnews.com/science/2018/09/25/popular-weed-killer-may-be-to-blame-for-honey-bee-deaths-study-suggests.html",
     "null",
     "null",
     "null"
