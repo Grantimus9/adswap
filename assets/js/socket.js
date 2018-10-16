@@ -112,6 +112,12 @@ channel.on("time_remaining", payload => {
   if (window.location.pathname == "/display" && payload.time == 1) {
     location.reload();
   }
+  if (payload.time > 14) {
+    // Clear the messages when a new auction starts.
+    while (messagesContainer.firstChild) {
+      messagesContainer.removeChild(messagesContainer.firstChild);
+    }
+  }
 })
 
 channel.on("auction_status", payload => {
