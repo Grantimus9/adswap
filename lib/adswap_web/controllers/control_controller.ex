@@ -15,7 +15,7 @@ defmodule AdswapWeb.ControlController do
 
     conn
     |> put_flash(:info, "Started New Auction")
-    |> render("index.html")
+    |> redirect(to: control_path(conn, :index))
   end
 
 end

@@ -7,32 +7,32 @@
     <meta name="description" content="">
     <meta name="author" content="">
 
-    <title>Hello Adswap!</title>
+    <title>AdSwap</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
 
   <body>
-    <div class="container">
-      <header class="header">
-        <nav role="navigation">
-          <ul class="nav nav-pills pull-left">
+    <nav class="navbar navbar-fixed">
+      <div class="container-fluid">
+        <div class="navbar-left">
+          <ul class="nav navbar-nav">
             <li><a href="/bid">Home (bid)</a></li>
           </ul>
-          <ul class="nav nav-pills pull-right">
+        </div>
+        <div class="navbar-right">
+          <ul class="nav navbar-nav">
             <li><a href="/bidders">Bidders</a></li>
             <li><a href="/impressions">Impressions</a></li>
             <li><a href="/campaigns">Campaigns</a></li>
           </ul>
-        </nav>
-      </header>
+        </div>
+      </div>
+    </nav>
 
+    <div class="container">
       <p class="alert alert-info" role="alert"><%= get_flash(@conn, :info) %></p>
       <p class="alert alert-danger" role="alert"><%= get_flash(@conn, :error) %></p>
-
-      <main role="main">
-        <%= render @view_module, @view_template, assigns %>
-      </main>
-
+      <%= render @view_module, @view_template, assigns %>
     </div> <!-- /container -->
     <script src="<%= static_path(@conn, "/js/app.js") %>"></script>
   </body>

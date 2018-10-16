@@ -67,25 +67,30 @@ let currentImpressionClientIpAddressContainer = document.querySelector("#current
 let currentImpressionTimeContainer = document.querySelector("#current-impression-time")
 
 
+if (bidInputCode) {
+  bidInputCode.addEventListener("keypress", event => {
+    if(event.keyCode === 13){
+      channel.push("new_bid", {bid_amount: bidInputAmount.value, bidder_code: bidInputCode.value})
+      bidInputAmount.value = null
+    }
+  })
+}
+if (bidInputAmount) {
+  bidInputAmount.addEventListener("keypress", event => {
+    if(event.keyCode === 13){
+      channel.push("new_bid", {bid_amount: bidInputAmount.value, bidder_code: bidInputCode.value})
+      bidInputAmount.value = null
+    }
+  })
+}
 
-bidInputCode.addEventListener("keypress", event => {
-  if(event.keyCode === 13){
-    channel.push("new_bid", {bid_amount: bidInputAmount.value, bidder_code: bidInputCode.value})
+if (bidSubmitBtn) {
+  bidSubmitBtn.addEventListener("click", event => {
+      channel.push("new_bid", {bid_amount: bidInputAmount.value, bidder_code: bidInputCode.value})
     bidInputAmount.value = null
-  }
-})
+  })
+}
 
-bidInputAmount.addEventListener("keypress", event => {
-  if(event.keyCode === 13){
-    channel.push("new_bid", {bid_amount: bidInputAmount.value, bidder_code: bidInputCode.value})
-    bidInputAmount.value = null
-  }
-})
-
-bidSubmitBtn.addEventListener("click", event => {
-    channel.push("new_bid", {bid_amount: bidInputAmount.value, bidder_code: bidInputCode.value})
-  bidInputAmount.value = null
-})
 
 channel.on("auction_event", payload => {
   console.info(payload)
@@ -104,6 +109,9 @@ channel.on("bid_count", payload => {
 channel.on("time_remaining", payload => {
   console.info(payload)
   timeRemainingContainer.innerText = payload.time
+  if (window.location.pathname == "/display" && payload.time == 1) {
+    location.reload();
+  }
 })
 
 channel.on("auction_status", payload => {

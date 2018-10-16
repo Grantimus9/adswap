@@ -17,6 +17,7 @@ defmodule AdswapWeb.Router do
     pipe_through :browser # Use the default browser stack
 
     get "/", PageController, :index
+    get "/display", PageController, :display
     get "/bid", BidderController, :bid
     get "/control", ControlController, :index
     get "/control/start_new_auction", ControlController, :new_auction

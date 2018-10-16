@@ -38,13 +38,11 @@
       <br>
     </div>
     <div class="text-center">
-      <input id="bid-input-amount" type="number" placeholder="bid in pennies"></input><br>
-      <input id="bid-input-code" type="text" placeholder="Bidder Code"></input><br>
-      <button id="submit-bid-btn">Submit</button><br>
+      <input id="bid-input-amount" type="number" placeholder="bid in pennies" class="form-control" ></input><br>
+      <input id="bid-input-code" type="text" placeholder="Bidder Code" class="form-control" ></input><br>
+      <button id="submit-bid-btn" class="btn btn-primary">Submit</button><br>
       or press enter. <br>
-
     </div>
-
   </div>
   <div class="col-sm-4">
     <div id="messages"></div>

@@ -117,7 +117,9 @@ defmodule Adswap.Auction do
 
   """
   def list_bidders do
-    Repo.all(Bidder)
+    Bidder
+    |> Repo.all()
+    |> Repo.preload(:campaign)
   end
 
   @doc """
