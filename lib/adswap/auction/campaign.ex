@@ -24,7 +24,7 @@ defmodule Adswap.Auction.Campaign do
   @doc false
   def changeset(campaign, attrs) do
     campaign
-    |> cast(attrs, [:name, :description, :budget])
+    |> cast(attrs, [:name, :description, :budget, :preferred_times, :preferred_urls, :preferred_cookie_ids, :preferred_client_ip_addresses])
     |> validate_required([:name, :description, :budget])
   end
 end

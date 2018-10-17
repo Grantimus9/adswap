@@ -17,6 +17,34 @@
     <%= @campaign.budget %>
   </li>
 
+  <%= if System.get_env("SHOW_GOALS") == true do %>
+    <h3>Segment Goals</h3>
+    Best Times:<br>
+    <%= for time <- @campaign.preferred_times do %>
+      <%= time %><br>
+    <% end %>
+    <br>
+
+    Best URLS:<br>
+    <%= for url <- @campaign.preferred_urls do %>
+      <%= url %><br>
+    <% end %>
+    <br>
+
+    Best Cookie IDs:<br>
+    <%= for id <- @campaign.preferred_cookie_ids do %>
+      <%= id %><br>
+    <% end %>
+    <br>
+
+    Best Client IP Addresses:<br>
+    <%= for ip <- @campaign.preferred_client_ip_addresses do %>
+      <%= ip %><br>
+    <% end %>
+    <br>
+  <% end %>
+
+
 </ul>
 
 <span><%= link "Edit", to: campaign_path(@conn, :edit, @campaign) %></span>
