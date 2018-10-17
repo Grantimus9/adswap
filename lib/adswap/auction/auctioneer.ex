@@ -33,7 +33,7 @@ defmodule Adswap.Auction.Auctioneer do
   # bidder_code hasn't already bid.
   def handle_call({:bid, new_bid}, _from, state) do
     new_bid = %{
-      bidder_code: Map.get(new_bid, "bidder_code"),
+      bidder_code: String.downcase(Map.get(new_bid, "bidder_code")),
       bid_amount: String.to_integer(Map.get(new_bid, "bid_amount"))
     }
 

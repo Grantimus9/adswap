@@ -79,6 +79,10 @@ defmodule Adswap.Auction do
     case bidder do
       nil ->
         {:error, "No Such Bidder by Code"}
+
+      "Default" ->
+        {:error, "No Winner."}
+
       bidder ->
         campaign = bidder |> Map.get(:campaign)
         budget = campaign |> Map.get(:budget)
@@ -88,24 +92,22 @@ defmodule Adswap.Auction do
   end
 
   def settle_auction(impression_map, %{winner_code: code, winner_pays: amount}) do
+    IO.inspect code
+
     case bill_winning_campaign(%{winner_code: code, winner_pays: amount}) do
       {:ok, campaign} ->
         log_impression(impression_map, %{winner_code: code, winner_pays: amount})
 
-      _ ->
+      other ->
+        IO.inspect other
         nil
     end
-  end
-
-  # Create bids.
-  def persist_bids_to_db(bids) do
-
   end
 
   #
   def log_impression(nil, _), do: {:error, "No impression map supplied"}
   def log_impression(_, nil), do: {:error, "No Winning Bid Provided"}
-  def log_impression(impression_map, %{bidder_code: code}) do
+  def log_impression(impression_map, %{winner_code: code}) do
     {:ok, impression} = create_impression(impression_map)
 
     campaign =
@@ -115,9 +117,10 @@ defmodule Adswap.Auction do
       |> Map.get(:campaign)
 
     impression
+    |> Repo.preload(:campaign)
     |> update_impression(%{
       clicked: clicked?(campaign, impression),
-      campaign: campaign
+      winning_campaign_id: campaign.id
       })
   end
 
@@ -223,6 +226,15 @@ defmodule Adswap.Auction do
     Bidder
     |> Repo.get!(id)
     |> Repo.preload([campaign: [:impressions]])
+  end
+
+
+  def get_bidder_clicks(bidder = %Bidder{}) do
+    bidder = get_bidder!(bidder.id)
+    campaign = bidder.campaign
+
+    from(i in Impression, where: i.winning_campaign_id == ^campaign.id, where: i.clicked == true)
+    |> Repo.aggregate(:count, :id)
   end
 
   @doc """

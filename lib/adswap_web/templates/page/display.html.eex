@@ -1,5 +1,5 @@
 <div class="jumbotron">
-  <h2>Bidders & Budgets</h2>
+  <h2>Scoreboard</h2>
   <h1 id="time-remaining"></h1>
 </div>
 <div class="row">
@@ -8,19 +8,38 @@
       <thead>
         <tr>
           <th scope="col">Bidder Name</th>
-          <th>Budget</th>
+          <th>Budget Remaining</th>
           <th>Impressions Won</th>
+          <th>Cost Per Milli (CPM)</th>
+          <th>Clicks</th>
+          <th>Click Through Rate</th>
+          <th>Cost Per Click (CPC)</th>
         </tr>
       </thead>
       <tbody>
         <%= for bidder <- @bidders do %>
+          <% imps = Enum.count(bidder.campaign.impressions) %>
+          <% clicks = Adswap.Auction.get_bidder_clicks(bidder) %>
         <tr>
           <td><%= bidder.name %></td>
           <td><%= bidder.campaign.budget %></td>
-          <td><%= Enum.count(bidder.campaign.impressions) %></td>
+          <td><%= imps %></td>
+          <td><%= cost_per_milli(imps, bidder.campaign.budget) %></td>
+          <td><%= clicks %></td>
+          <td><%= click_through_rate(imps, clicks) %></td>
+          <td><%= cost_per_click(clicks, bidder.campaign.budget) %></td>
         </tr>
         <% end %>
       </tbody>
     </table>
   </div>
+</div>
+<div class="row">
+  <p>
+    Impressions and clicks are somewhat randomized. You have a better likelihood of getting a click if the
+    impression matches what your campaign is trying to achieve.
+  </p>
+  <p>
+    Bidders with the same campaign may share a budget.
+  </p>
 </div>
