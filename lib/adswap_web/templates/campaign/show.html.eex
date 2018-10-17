@@ -17,7 +17,7 @@
     <%= @campaign.budget %>
   </li>
 
-  <%= if System.get_env("SHOW_GOALS") == true do %>
+  <%= if System.get_env("SHOW_GOALS") == "true" do %>
     <h3>Segment Goals</h3>
     Best Times:<br>
     <%= for time <- @campaign.preferred_times do %>
