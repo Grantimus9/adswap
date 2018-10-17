@@ -10,7 +10,6 @@
     <title>AdSwap</title>
     <link rel="stylesheet" href="<%= static_path(@conn, "/css/app.css") %>">
   </head>
-
   <body>
     <nav class="navbar navbar-fixed">
       <div class="container-fluid">
@@ -22,9 +21,7 @@
         </div>
         <div class="navbar-right">
           <ul class="nav navbar-nav">
-            <li><a href="/bidders">Bidders</a></li>
             <li><a href="/impressions">Impressions</a></li>
-            <li><a href="/campaigns">Campaigns</a></li>
           </ul>
         </div>
       </div>

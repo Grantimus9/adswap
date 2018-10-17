@@ -3,6 +3,10 @@
   <div class="col-sm-6">
     <h2>Auction</h2>
     <%= link "Start new Auction", to: control_path(@conn, :new_auction), method: :post, class: "btn btn-primary" %>
+
+    <h2>Links</h2>
+    <a href="/campaigns">Campaigns</a>
+    <a href="/bidders">Bidders</a>
   </div>
   <div class="col-sm-4">
     <h1 id="time-remaining"></h1>
