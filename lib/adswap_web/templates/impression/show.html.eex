@@ -24,5 +24,4 @@
 
 </ul>
 
-<span><%= link "Edit", to: impression_path(@conn, :edit, @impression) %></span>
 <span><%= link "Back", to: impression_path(@conn, :index) %></span>

@@ -17,6 +17,7 @@
         <div class="navbar-left">
           <ul class="nav navbar-nav">
             <li><a href="/bid">Home (bid)</a></li>
+            <li><a href="/display">Scoreboard</a></li>
           </ul>
         </div>
         <div class="navbar-right">

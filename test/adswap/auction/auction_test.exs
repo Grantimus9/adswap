@@ -194,4 +194,13 @@ defmodule Adswap.AuctionTest do
       assert %Ecto.Changeset{} = Auction.change_campaign(campaign)
     end
   end
+
+
+  test "Clicked? Works" do
+    campaign = %Auction.Campaign{preferred_client_ip_addresses: ["111.1.1.1"]}
+    impression = %Auction.Impression{client_ip_address: "111.1.1.1"}
+    # this returns either true or false.
+    assert is_boolean(Auction.clicked?(campaign, impression))
+  end
+
 end

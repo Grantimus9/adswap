@@ -87,6 +87,16 @@ defmodule Adswap.Auction do
     end
   end
 
+  def settle_auction(impression_map, %{winner_code: code, winner_pays: amount}) do
+    case bill_winning_campaign(%{winner_code: code, winner_pays: amount}) do
+      {:ok, campaign} ->
+        log_impression(impression_map, %{winner_code: code, winner_pays: amount})
+
+      _ ->
+        nil
+    end
+  end
+
   # Create bids.
   def persist_bids_to_db(bids) do
 
@@ -97,14 +107,92 @@ defmodule Adswap.Auction do
 
   end
 
+  #
+  def log_impression(nil, _), do: {:error, "No impression map supplied"}
+  def log_impression(_, nil), do: {:error, "No Winning Bid Provided"}
+  def log_impression(impression_map, %{bidder_code: code}) do
+    {:ok, impression} = create_impression(impression_map)
 
+    campaign =
+      Bidder
+      |> Repo.get_by(code: code)
+      |> Repo.preload(:campaign)
+      |> Map.get(:campaign)
 
+    impression
+    |> update_impression(%{
+      clicked: clicked?(campaign, impression),
+      campaign: campaign
+      })
+  end
 
+  @doc """
+    Chooses if the winning bid/campaign got a click from the given impression.
+  """
+  def clicked?(campaign = %Campaign{}, impression = %Impression{}) do
+    targets_hit =
+      [
+        preferred_client_ip_address?(campaign, impression),
+        preferred_cookie_id?(campaign, impression),
+        preferred_url?(campaign, impression),
+        preferred_time?(campaign, impression)
+      ]
+      |> Enum.filter(&(&1 == true))
+      |> Enum.count()
 
+    case targets_hit do
+      0 ->
+        # 1/5 chance.
+        probability_to_boolean(10, 100)
 
+      1 ->
+        # 1/4 chance of click
+        probability_to_boolean(25, 100)
 
+      2 ->
+        # 50/50 chance of click
+        probability_to_boolean(50, 100)
 
+      3 ->
+        # 75% chance
+        probability_to_boolean(75, 100)
 
+      4 ->
+        # 95% chance
+        probability_to_boolean(95, 100)
+
+      _ ->
+        # something went wrong, 5% chance.
+        probability_to_boolean(5, 100)
+    end
+  end
+
+  # Given a probability expressed as chance/divisor,
+  # returns t/f by randomly pulling a result.
+  # e.g. probability_to_boolean(6, 10) means 60% chance.
+  defp probability_to_boolean(chance, divisor) when is_integer(chance) and is_integer(divisor) do
+    if :rand.uniform(divisor) <= chance do
+      true
+    else
+      false
+    end
+  end
+
+  defp preferred_client_ip_address?(campaign = %Campaign{}, impression = %Impression{}) do
+    impression.client_ip_address in campaign.preferred_client_ip_addresses
+  end
+
+  defp preferred_cookie_id?(campaign = %Campaign{}, impression = %Impression{}) do
+    impression.cookie_id in campaign.preferred_cookie_ids
+  end
+
+  defp preferred_url?(campaign = %Campaign{}, impression = %Impression{}) do
+    impression.url in campaign.preferred_urls
+  end
+
+  defp preferred_time?(campaign = %Campaign{}, impression = %Impression{}) do
+    impression.time in campaign.preferred_times
+  end
 
 
   @doc """

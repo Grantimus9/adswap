@@ -84,9 +84,9 @@ defmodule Adswap.Auction.Auctioneer do
         # Choose winner, calculate winning bid, and winning price paid.
         results = Auction.choose_winner(Map.get(state, :bids))
 
-        IO.inspect Auction.bill_winning_campaign(results)
+        # Log Impression, Bill campaign
+        Auction.settle_auction(impression, %{winner_code: results.winner_code, winner_pays: results.winner_pays})
 
-        # Deduct price paid from winner's balance.
         # broadcast winner information to participants
         AdswapWeb.Endpoint.broadcast("auction:lobby", "auction_event", %{message: "Bidding Closed."})
         AdswapWeb.Endpoint.broadcast("auction:lobby", "auction_event", %{message: "Winning Bidder Paid: " <> Integer.to_string(Map.get(results, :winner_pays))})

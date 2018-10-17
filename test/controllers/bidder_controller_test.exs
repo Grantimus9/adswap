@@ -1,7 +1,7 @@
 defmodule Adswap.BidderControllerTest do
-  use Adswap.ConnCase
+  use AdswapWeb.ConnCase
 
-  alias Adswap.Bidder
+  alias Adswap.Auction.Bidder
   @valid_attrs %{balance: 42, name: "some name"}
   @invalid_attrs %{}
 

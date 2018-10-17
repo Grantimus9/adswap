@@ -1,7 +1,7 @@
 defmodule Adswap.Auction.Campaign do
   use Ecto.Schema
   import Ecto.Changeset
-  alias Adswap.Auction.Bidder
+  alias Adswap.Auction.{Bidder, Impression}
 
   schema "campaigns" do
     field :budget, :integer
@@ -14,6 +14,9 @@ defmodule Adswap.Auction.Campaign do
     field :preferred_times, {:array, :string}, default: []
 
     has_many :bidders, Bidder
+
+    # Campaigns win impressions.  
+    has_many :impressions, Impression
 
     timestamps()
   end
