@@ -102,11 +102,6 @@ defmodule Adswap.Auction do
 
   end
 
-  # Save impression, with winner info.
-  def persist_impression_to_db(impression = %Impression{}) do
-
-  end
-
   #
   def log_impression(nil, _), do: {:error, "No impression map supplied"}
   def log_impression(_, nil), do: {:error, "No Winning Bid Provided"}
@@ -207,7 +202,7 @@ defmodule Adswap.Auction do
   def list_bidders do
     Bidder
     |> Repo.all()
-    |> Repo.preload(:campaign)
+    |> Repo.preload([campaign: [:impressions]])
   end
 
   @doc """
@@ -227,7 +222,7 @@ defmodule Adswap.Auction do
   def get_bidder!(id) do
     Bidder
     |> Repo.get!(id)
-    |> Repo.preload(:campaign)
+    |> Repo.preload([campaign: [:impressions]])
   end
 
   @doc """

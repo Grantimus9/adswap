@@ -15,8 +15,8 @@ defmodule Adswap.Auction.Campaign do
 
     has_many :bidders, Bidder
 
-    # Campaigns win impressions.  
-    has_many :impressions, Impression
+    # Campaigns win impressions.
+    has_many :impressions, Impression, [foreign_key: :winning_campaign_id]
 
     timestamps()
   end

@@ -11,7 +11,7 @@ defmodule Adswap.Auction.Impression do
     field :url, :string
     field :clicked, :boolean, default: false
 
-    belongs_to :campaign, Campaign, foreign_key: :winning_campaign_id
+    belongs_to :campaign, Campaign, [foreign_key: :winning_campaign_id]
 
     timestamps()
   end

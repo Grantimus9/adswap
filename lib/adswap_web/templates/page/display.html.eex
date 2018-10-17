@@ -9,6 +9,7 @@
         <tr>
           <th scope="col">Bidder Name</th>
           <th>Budget</th>
+          <th>Impressions Won</th>
         </tr>
       </thead>
       <tbody>
@@ -16,6 +17,7 @@
         <tr>
           <td><%= bidder.name %></td>
           <td><%= bidder.campaign.budget %></td>
+          <td><%= Enum.count(bidder.campaign.impressions) %></td>
         </tr>
         <% end %>
       </tbody>
